@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+  <h1> NMAP </h1>
+  <div class="container">
+
+    <form method="post">
+
+      {% csrf_token %}
+      {{ form.as_p }}
+      {{form2.as_p}}
+
+
+      <button type="submit">Scan</button>
+    </form>
+
+    <h2>{{warning}}</h2>
+
+  {%if done%}
+    {%if length%}
+    <h2>{{url}}</h2>
+    <table>
+      <tr>
+        <th>Sous domaine</th>
+        <th>adresse ip</th>
+        <th>module</th>
+      </tr>
+      {%for i in raws%}
+        <tr>
+
+          {%for j in i%}
+            <td> {{j}} </td>
+          {%endfor%}
+
+        </tr>
+      {%endfor%}
+
+    </table>
+    {% else %}
+    <h2>  {%for i in url%}
+      {{i}}  &nbsp
+    {%endfor%}</h2>
+
+      {%for i in raws%}
+
+        <table>
+          <tr>
+            <th>Sous domaine</th>
+            <th>adresse ip</th>
+            <th>module</th>
+          </tr>
+
+        {%for j in i%}
+          <tr>
+
+            {%for k in j%}
+            <td> {{k}} </td>
+            {%endfor%}
+
+          </tr>
+        {%endfor%}
+
+      {%endfor%}
+</table>
+  {%endif%}
+  {%endif%}
+  </div>
+</body>
+</html>
