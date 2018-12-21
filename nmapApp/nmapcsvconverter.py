@@ -615,7 +615,7 @@ def generate_csv(fd, results, options):
 
             for line_to_write in zip(*formatted_attribute_list):
                 spamwriter.writerow(list(line_to_write))
-                
+
             # Print a newline if asked
             if not options.no_newline:
                 spamwriter.writerow('')
@@ -659,17 +659,27 @@ def converter():
 def tosql():
     con = sqlite3.connect("/root/scan.db")
     cur = con.cursor()
-    cur.execute("CREATE TABLE t (col1, col2);") # use your column names here
+    cur.execute("DROP TABLE t;")
+    cur.execute("CREATE TABLE t (IP,PORT,PROTOCOL,SERVICE,VERSION);") # use your column names here
 
-    with open('scan.csv','rb') as fin: # `with` statement available in 2.5+
+    with open('/root/scan.csv','r') as fin: # `with` statement available in 2.5+
     # csv.DictReader uses first line in file for column headings by default
-        dr = csv.DictReader(fin) # comma is default delimiter
-        to_db = [(i['col1'], i['col2']) for i in dr]
+        dr = csv.DictReader(fin,delimiter = ';') # comma is default delimiter
+        to_db = [(i['IP'], i['PORT'],i['PROTOCOL'],i['SERVICE'],i['VERSION']) for i in dr]
 
-    cur.executemany("INSERT INTO t (col1, col2) VALUES (?, ?);", to_db)
+    cur.executemany("INSERT INTO t (IP,PORT,PROTOCOL,SERVICE,VERSION) VALUES (?, ?, ?, ?, ?);", to_db)
     con.commit()
     con.close()
     return
+
+def collecte_info_sqlite ():
+    con = sqlite3.connect("/root/scan.db")
+    cur = con.cursor()
+    cur.execute("""SELECT IP,PORT,PROTOCOL,SERVICE,VERSION FROM t """)
+    raws = cur.fetchall()
+    #print (raws)
+    #print("all data collected")
+    return raws
 
 
 if __name__ == "__main__":

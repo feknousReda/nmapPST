@@ -9,10 +9,13 @@ class backProcess():
         argument =  opt + "  -oG /root/scan.txt"
         nm = nmap.PortScanner()
         nm.scan( arguments = argument,hosts = url)
-        print(nm.command_line())
-        print(argument)
+        #print(nm.command_line())
+        #print(argument)
         #exec(open("nmapApp.nmapcsvconverter.py").read())
         nmapcsvconverter.converter()
+        nmapcsvconverter.tosql()
+        raws = nmapcsvconverter.collecte_info_sqlite()
+        return raws
 #execfile("nmapcsvconverter.py")
 #nm.scan(hosts)
 

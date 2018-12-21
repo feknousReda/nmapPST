@@ -25,7 +25,8 @@ class HomeView(TemplateView):
             opt = form2.cleaned_data['Options']
             warning = ""
             try:
-                backProcess.launchNmap(url,opt)
+                done = True
+                raws = backProcess.launchNmap(url,opt)
             except Exception as e:
                 warning = "An exception appeared "+str(e)
                 print("The warning is "+str(e))
@@ -35,5 +36,5 @@ class HomeView(TemplateView):
             form = HomeForm()
             form2 = HomeFormOptions()
             #print('executing')
-            args = {'form': form,'form2':form2,'warning':warning}
+            args = {'form':form,'form2':form2,'warning':warning,'raws':raws,'done':done}
             return render(request, self.template_name, args)
