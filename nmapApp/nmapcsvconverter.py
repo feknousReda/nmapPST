@@ -594,7 +594,7 @@ def generate_csv(fd, results, options):
 
         @param fd : output file descriptor, could be a true file or stdout
     """
-    f_output = open("/root/scan.csv",'w')
+    f_output = open("/scan.csv",'w')
     if results:
         spamwriter = csv.writer(f_output, delimiter=options.delimiter, quoting=csv.QUOTE_ALL, lineterminator='\n')
 
@@ -628,7 +628,7 @@ def generate_csv(fd, results, options):
 
 def converter():
     global parser
-    f_input = open("/root/scan.txt",'r')
+    f_input = open("/scan.txt",'r')
 
     options, arguments = parser.parse_args()
 
@@ -657,12 +657,12 @@ def converter():
     return
 
 def tosql():
-    con = sqlite3.connect("/root/scan.db")
+    con = sqlite3.connect("/scan.db")
     cur = con.cursor()
-    cur.execute("DROP TABLE t;")
+    cur.execute("DROP TABLE IF EXISTS t;")
     cur.execute("CREATE TABLE t (IP,PORT,PROTOCOL,SERVICE,VERSION);") # use your column names here
 
-    with open('/root/scan.csv','r') as fin: # `with` statement available in 2.5+
+    with open('/scan.csv','r') as fin: # `with` statement available in 2.5+
     # csv.DictReader uses first line in file for column headings by default
         dr = csv.DictReader(fin,delimiter = ';') # comma is default delimiter
         to_db = [(i['IP'], i['PORT'],i['PROTOCOL'],i['SERVICE'],i['VERSION']) for i in dr]
@@ -673,7 +673,7 @@ def tosql():
     return
 
 def collecte_info_sqlite ():
-    con = sqlite3.connect("/root/scan.db")
+    con = sqlite3.connect("/scan.db")
     cur = con.cursor()
     cur.execute("""SELECT IP,PORT,PROTOCOL,SERVICE,VERSION FROM t """)
     raws = cur.fetchall()

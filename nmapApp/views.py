@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
-from nmapApp.forms import HomeForm,SimpleForm,HomeFormOptions
+from nmapApp.forms import HomeForm,HomeFormOptions
 from nmapApp.back import backProcess
 import string
 
