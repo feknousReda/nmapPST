@@ -38,3 +38,7 @@ class HomeView(TemplateView):
             #print('executing')
             args = {'form':form,'form2':form2,'warning':warning,'raws':raws,'done':done}
             return render(request, self.template_name, args)
+
+
+
+
